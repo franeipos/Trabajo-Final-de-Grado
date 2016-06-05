@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_inicio"
+    android:weightSum="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/micro"
+        android:layout_gravity="center"
+        android:src="@drawable/ear2"
+        android:layout_weight="0.3"
+        android:layout_marginTop="15dp" />
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=" TOCA PARA CONDUCIR"
+            android:id="@+id/jni"
+            android:textSize="33dp"
+            android:textColor="#a04763"
+            android:fontFamily="sans-serif-light"
+            android:typeface="normal"
+            android:textStyle="italic"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <!--<TextView-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:text=" PARA"-->
+            <!--android:textSize="33dp"-->
+            <!--android:textColor="#a04763"-->
+            <!--android:fontFamily="sans-serif-light"-->
+            <!--android:typeface="normal"-->
+            <!--android:textStyle="italic"-->
+            <!--android:layout_weight="0.7"-->
+            <!--android:gravity="center_horizontal" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:text="CONDUCIR"-->
+            <!--android:textSize="45dp"-->
+            <!--android:textColor="#a04763"-->
+            <!--android:fontFamily="sans-serif-condensed"-->
+            <!--android:typeface="normal"-->
+            <!--android:textStyle="italic"-->
+            <!--android:layout_weight="0.6"-->
+            <!--android:gravity="center_horizontal" />-->
+
+
+</LinearLayout>

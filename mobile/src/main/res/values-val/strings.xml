@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Prova</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_message">escriu un missatge</string>
+    <string name="boton_enviar">Enviar</string>
+    <string name="title_activity_mensaje">MensajeActivity</string>
+</resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_inicio"
+    android:weightSum="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/micro"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ear2" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=" TOCA"
+        android:id="@+id/jni"
+        android:textSize="52dp"
+        android:textColor="#a04763"
+        android:fontFamily="sans-serif-light"
+        android:typeface="normal"
+        android:textStyle="italic"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=" PARA"
+        android:textSize="40dp"
+        android:textColor="#a04763"
+        android:fontFamily="sans-serif-light"
+        android:typeface="normal"
+        android:textStyle="italic"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="CONDUCIR"
+        android:textSize="52dp"
+        android:textColor="#a04763"
+        android:fontFamily="sans-serif-condensed"
+        android:typeface="normal"
+        android:textStyle="italic"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>
