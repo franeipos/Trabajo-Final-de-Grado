@@ -90,7 +90,7 @@ public class InicioActivity extends Activity implements MessageApi.MessageListen
                 long_gap
         };
 
-// Only perform this pattern one time (-1 means "do not repeat")
+        // Only perform this pattern one time (-1 means "do not repeat")
         v.vibrate(pattern, -1);
 
     }

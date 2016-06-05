@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -66,6 +67,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 1;
     private static final int POLL_INTERVAL = 75; // variable para controlar cada cuanto anañizamos el volumen del sonido.
+    private static final String RUTA = "/start_activity"; //ruta que se manda al wearable
 
     private static String mFileName = null;
 
@@ -73,7 +75,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
     private SoundMeter mSensor = null;
 
-    private PlayButton   mPlayButton = null;
+
     private MediaPlayer mPlayer = null;
 
     private boolean mIsLargeLayout = false;
@@ -100,6 +102,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     //Variable para acceder a las preferencias del usuario
     private SharedPreferences prefs = null;
     private Boolean automatico = false;
+    private Boolean vibracion = false;
 
     private Handler mHandler = new Handler();
     // Creamos un nuevo hilo para controlar en segundo plano el volumen de la voz
@@ -112,6 +115,8 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
             if ((amp > 80)) {
 
                 Log.i("Noise", "SUPERADO EL UMBRAL");
+                sendMessage(RUTA, "2");
+                vibrar();
                 showDialog();
 
             }
@@ -160,32 +165,6 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         stopAnimation();
     }
 
-    class PlayButton extends Button {
-        boolean mStartPlaying = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                    setText("Stop playing");
-                } else {
-                    setText("Start playing");
-                }
-                mStartPlaying = !mStartPlaying;
-            }
-        };
-
-        public PlayButton(Context ctx) {
-            super(ctx);
-            setText("Start playing");
-            setOnClickListener(clicker);
-        }
-    }
-
-    public MensajeActivity() {
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
-    }
 
     public void startAnimation() {
         ImageView image = (ImageView) findViewById(R.id.fondoAnimado);
@@ -208,7 +187,6 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         microfono.setImageResource(R.drawable.mute);
 
     }
-
 
     public void showDialog() {
         //FragmentManager fragmentManager = getSupportFragmentManager();
@@ -250,13 +228,44 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 //        }
     }
 
-
     public void dismissDialog(){
         newFragment.dismiss();
     }
+
+    private void vibrar() {
+
+        if(vibracion) {
+            // Get instance of Vibrator from current Context
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+            int dot = 200;      // Length of a Morse Code "dot" in milliseconds
+            int dash = 500;     // Length of a Morse Code "dash" in milliseconds
+            int short_gap = 200;    // Length of Gap Between dots/dashes
+            int medium_gap = 500;   // Length of Gap Between Letters
+            int long_gap = 1000;    // Length of Gap Between Words
+            long[] pattern = {
+                    0,  // Start immediately
+                    dot, short_gap, dot, short_gap, dot,    // s
+                    medium_gap,
+                    dash, short_gap, dash, short_gap, dash, // o
+                    medium_gap,
+                    dot, short_gap, dot, short_gap, dot,    // s
+                    long_gap
+            };
+
+            // Only perform this pattern one time (-1 means "do not repeat")
+            v.vibrate(pattern, -1);
+        }
+
+    }
+
+    /******************* BORRAR *******************/
     public void Boton (View view){
         sendMessage("/start_activity", "2");
+        vibrar();
     }
+
+    //********************************************/
 
     private void sendMessage( final String path, final String text ) {
         new Thread( new Runnable() {
@@ -322,6 +331,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         //Cogemos las preferencias del usuario por si desea utilizar la detección automática.
         prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         automatico = prefs.getBoolean("quieto", false);
+        vibracion = prefs.getBoolean("vibrar",false);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
