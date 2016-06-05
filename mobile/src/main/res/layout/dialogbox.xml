@@ -37,7 +37,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/demo2"
+            android:id="@+id/checkWatch"
             android:layout_width="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/margin_right"

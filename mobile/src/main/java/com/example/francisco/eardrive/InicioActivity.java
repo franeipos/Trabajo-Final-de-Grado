@@ -75,6 +75,17 @@ public class InicioActivity extends AppCompatActivity {
             }
         });
 
+        View checkWatch = (View) dialog.findViewById(R.id.checkWatch);
+        checkWatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InicioActivity.this, CheckWatchActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
 
         // it show the dialog box

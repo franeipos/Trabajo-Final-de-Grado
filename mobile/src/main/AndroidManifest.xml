@@ -4,11 +4,14 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Permisos para detectar que actividad hace el usuario -->
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MensajeActivity"
             android:label="@string/title_activity_mensaje"
@@ -36,7 +38,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.francisco.eardrive.InicioActivity" />
         </activity>
-
         <activity
             android:name=".ConfiguracionActivity"
             android:label="@string/title_activity_configuracion"
@@ -46,8 +47,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.francisco.eardrive.InicioActivity" />
         </activity>
+        <activity
+            android:name=".CheckWatchActivity"
+            android:label="@string/title_activity_check_watch"
+            android:parentActivityName=".InicioActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.francisco.eardrive.InicioActivity" />
+        </activity>
     </application>
-
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
 </manifest>
