@@ -12,10 +12,22 @@
     tools:context="com.example.francisco.eardrive.CheckWatchActivity"
     tools:showIn="@layout/activity_check_watch">
 
+    <TextView
+        android:id="@+id/pairedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/paired"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="32dp"
+        android:textStyle="italic"
+        android:fontFamily="sans-serif-light"
+        android:typeface="normal"
+        android:layout_centerHorizontal="true" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/dispaired"
-        android:id="@+id/paired"/>
+        android:id="@+id/paired"
+
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Node;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CheckWatchActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
     private GoogleApiClient mApiClient;
     private ImageView paired = null;
+    private TextView tPaired = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,11 @@ public class CheckWatchActivity extends AppCompatActivity implements GoogleApiCl
         setContentView(R.layout.activity_check_watch);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        paired = (ImageView) findViewById(R.id.paired);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        paired = (ImageView) findViewById(R.id.paired);
+        tPaired =(TextView) findViewById(R.id.pairedText);
 
         initGoogleApiClient();
     }
@@ -55,9 +60,11 @@ public class CheckWatchActivity extends AppCompatActivity implements GoogleApiCl
                     public void run() {
                         if(!connectedNodes.isEmpty()){
                             paired.setImageResource(R.drawable.paired);
+                            tPaired.setText("CONECTADO");
                         }
                         else{
                             paired.setImageResource(R.drawable.dispaired);
+                            tPaired.setText("NO CONECTADO");
                         }
                     }
                 });
