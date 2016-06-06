@@ -3,6 +3,8 @@ package com.example.francisco.eardrive;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.util.Log;
 
 
 /**
@@ -14,12 +16,19 @@ public class SoundMeter {
     private int bufferSize;
     private double lastLevel = 0;
 
+    private int tiempoAmbienteBuffer = 0;
+    private double ambienteAmplitud = 0;
+    private int numBuffersAmbiente = 0;
+
 
     public void start() {
         try {
-            bufferSize = AudioRecord
-                    .getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,
-                            AudioFormat.ENCODING_PCM_16BIT);
+
+//            bufferSize = AudioRecord
+//                    .getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,
+//                            AudioFormat.ENCODING_PCM_16BIT);
+            bufferSize = 4410;
+            Log.e("BUFFER" ,"BUFER SIZE :" + bufferSize);
         } catch (Exception e) {
             android.util.Log.e("TrackingFlow", "Exception", e);
         }
@@ -48,8 +57,10 @@ public class SoundMeter {
                 double sumLevel = 0;
                 for (int i = 0; i < bufferReadResult; i++) {
                     sumLevel += buffer[i];
+
                 }
                 lastLevel = Math.abs((sumLevel / bufferReadResult));
+               // lastLevel  = 20*Math.log10(Math.abs(lastLevel)/32767);
             }
 
         } catch (Exception e) {
@@ -58,6 +69,7 @@ public class SoundMeter {
 
         return lastLevel;
     }
+
 
     public void stop() {
         try {

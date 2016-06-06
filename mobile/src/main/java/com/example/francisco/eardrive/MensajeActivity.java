@@ -59,6 +59,7 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class MensajeActivity extends AppCompatActivity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
@@ -66,7 +67,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 1;
-    private static final int POLL_INTERVAL = 75; // variable para controlar cada cuanto anañizamos el volumen del sonido.
+    private static final int POLL_INTERVAL = 100; // variable para controlar cada cuanto anañizamos el volumen del sonido.
     private static final String RUTA = "/start_activity"; //ruta que se manda al wearable
 
     private static String mFileName = null;
@@ -104,27 +105,42 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private Boolean automatico = false;
     private Boolean vibracion = false;
 
+    private Boolean grabandoAmbiente =  false;
+    private int contAmbiente = 0;
+    private double ambiente = 0;
     private Handler mHandler = new Handler();
     // Creamos un nuevo hilo para controlar en segundo plano el volumen de la voz
     private Runnable mPollTask = new Runnable() {
         public void run() {
 
             double amp = mSensor.getAmplitud();
-            //Log.i("Noise", "Amplitud : " +amp);
 
-            if ((amp > 80)) {
+            if (grabandoAmbiente) {
+                Log.i("Noise", "Amplitud : " + amp);
+                ambiente += amp;
+                contAmbiente++;
+                if (contAmbiente >= 10) {
+                    grabandoAmbiente = false;
+                    ambiente = ambiente / 10;
+                    contAmbiente = 0;
+                    Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
+                }
+            } else {
+                if ((amp > 80)) {
 
-                Log.i("Noise", "SUPERADO EL UMBRAL");
-                sendMessage(RUTA, "2");
-                vibrar();
-                showDialog();
+                    Log.i("Noise", "SUPERADO EL UMBRAL");
+                    sendMessage(RUTA, "2");
+                    vibrar();
+                    showDialog();
 
+                }
             }
 
             // Runnable(mPollTask) will again execute after POLL_INTERVAL
             mHandler.postDelayed(mPollTask, POLL_INTERVAL);
         }
     };
+    private double amplitudAmbiente;
 
 
     private void onPlay(boolean start) {
@@ -161,6 +177,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
     private void stopRecording() {
         mSensor.stop();
+        mHandler.removeCallbacks(mPollTask);
         recording = false;
         stopAnimation();
     }
@@ -405,6 +422,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.STRING_ACTION));
 
         //Comenzamos a grabar el sonido ambiente
+        grabandoAmbiente = true;
         startRecording();
 
     }
@@ -535,6 +553,11 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                 Toast.makeText(this, "Se ha detenido la detección aumtomaticamente", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public double getAmplitudAmbiente() {
+
+        return amplitudAmbiente;
     }
 
     public class ActivityDetectionBroadcastReceiver extends BroadcastReceiver {
