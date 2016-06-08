@@ -123,6 +123,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                     grabandoAmbiente = false;
                     ambiente = ambiente / 10;
                     contAmbiente = 0;
+                    cambiarIco();
                     Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
                 }
             } else {
@@ -143,29 +144,6 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private double amplitudAmbiente;
 
 
-    private void onPlay(boolean start) {
-        if (start) {
-            startPlaying();
-        } else {
-            stopPlaying();
-        }
-    }
-
-    private void startPlaying() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
-    }
-
-    private void stopPlaying() {
-        mPlayer.release();
-        mPlayer = null;
-    }
 
     private void startRecording() {
         mSensor.start();
@@ -190,8 +168,20 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         image.startAnimation(animation);
         text.setVisibility(View.VISIBLE);
 
-        //Cambiamos la imagen del micro
-        microfono.setImageResource(R.drawable.microflat);
+        cambiarIco();
+    }
+
+    public void cambiarIco() {
+        TextView text = (TextView) findViewById(R.id.detectando);
+        if(grabandoAmbiente == true){
+            text.setText("Grabando ambiente");
+            microfono.setImageResource(R.drawable.ambiente);
+        }
+        else{
+            text.setText("Detectando ...");
+            //Cambiamos la imagen del micro
+            microfono.setImageResource(R.drawable.microflat);
+        }
     }
 
     public void stopAnimation(){
