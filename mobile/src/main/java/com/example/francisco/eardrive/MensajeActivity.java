@@ -67,7 +67,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 1;
-    private static final int POLL_INTERVAL = 100; // variable para controlar cada cuanto anañizamos el volumen del sonido.
+    private static final int POLL_INTERVAL = 128; // variable para controlar cada cuanto anañizamos el volumen del sonido.
     private static final String RUTA = "/start_activity"; //ruta que se manda al wearable
 
     private static String mFileName = null;
@@ -119,17 +119,17 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                 Log.i("Noise", "Amplitud : " + amp);
                 ambiente += amp;
                 contAmbiente++;
-                if (contAmbiente >= 10) {
+                if (contAmbiente >= 15) {
                     grabandoAmbiente = false;
-                    ambiente = ambiente / 10;
+                    ambiente = ambiente / 15;
                     contAmbiente = 0;
                     cambiarIco();
                     Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
                 }
             } else {
-                if ((amp > 80)) {
+                if ((amp - ambiente) > 30) {
 
-                    Log.i("Noise", "SUPERADO EL UMBRAL");
+                    Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente);
                     sendMessage(RUTA, "2");
                     vibrar();
                     showDialog();
