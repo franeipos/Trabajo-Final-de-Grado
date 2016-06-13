@@ -3,6 +3,7 @@ package com.example.francisco.eardrive;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
@@ -79,7 +80,7 @@ public class SoundMeter {
 
     private void convertShortToDouble(short[] buffer) {
         for (int i =0;i<buffer.length;i++){
-            audioBuffer[i] = new Complex(buffer[i],0);
+            audioBuffer[i] = new Complex(buffer[i]/32768.0,0);
         }
     }
 
@@ -119,7 +120,7 @@ public class SoundMeter {
         int mPeak = 0;
 
         //Loop through the fft bins and filter frequencies
-        for(int fftBin = 0; fftBin < audioBuffer.length; fftBin++){
+        for(int fftBin = 0; fftBin < audioBuffer.length / 2; fftBin++){
 //            //Calculate the frequency of this bin assuming a sampling rate of 44,100 Hz
 //            float frequency = (float)fftBin * (float)sampleRate / (float)FFT_SIZE;
 //
@@ -142,9 +143,13 @@ public class SoundMeter {
 
     public void compararSonidos(float frec , double abs){
 
-        Log.e("SOUND","Frecuencia : " + frec);
 
-        Log.e("SOUND", "Magnitud : " + abs);
+        if(frec > 100 && frec < 800){
+            Log.e("SOUND","Frecuencia : " + frec);
+
+            Log.e("SOUND", "Magnitud : " + abs);
+        }
+
     }
 
 
@@ -158,4 +163,5 @@ public class SoundMeter {
         }
         catch (Exception e) {e.printStackTrace();}
     }
+
 }
