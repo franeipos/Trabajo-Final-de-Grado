@@ -20,10 +20,11 @@ public class SoundMeter {
     private int bufferSize;
     private double lastLevel = 0;
     private Complex audioBuffer[];
+    private double[] window;
     private int tiempoAmbienteBuffer = 0;
     private double ambienteAmplitud = 0;
     private int numBuffersAmbiente = 0;
-
+    private int cont = 0;
 
     public void start() {
         try {
@@ -60,8 +61,11 @@ public class SoundMeter {
 
                 // Sense the voice...
                 bufferReadResult = audio.read(buffer, 0, bufferSize);
-                convertShortToDouble(buffer);
-                calculateFFT();
+                if(cont ==0) {
+                    convertShortToDouble(applyWindow(buffer));
+                    calculateFFT();
+                    cont++;
+                }
                 double sumLevel = 0;
                 for (int i = 0; i < bufferReadResult; i++) {
                     sumLevel += buffer[i];
@@ -78,9 +82,9 @@ public class SoundMeter {
         return lastLevel;
     }
 
-    private void convertShortToDouble(short[] buffer) {
+    private void convertShortToDouble(double[] buffer) {
         for (int i =0;i<buffer.length;i++){
-            audioBuffer[i] = new Complex(buffer[i]/32768.0,0);
+            audioBuffer[i] = new Complex(buffer[i]/32768,0);
         }
     }
 
@@ -121,8 +125,8 @@ public class SoundMeter {
 
         //Loop through the fft bins and filter frequencies
         for(int fftBin = 0; fftBin < audioBuffer.length / 2; fftBin++){
-//            //Calculate the frequency of this bin assuming a sampling rate of 44,100 Hz
-//            float frequency = (float)fftBin * (float)sampleRate / (float)FFT_SIZE;
+//            //Calculate the frequency of this bin assuming a sampling rate
+            //float frequency = (float)fftBin * (float)sampleRate / (float)FFT_SIZE;
 //
 //            //Calculate the index where the real and imaginary parts are stored
 //            double real =  2*fftBin;
@@ -130,7 +134,7 @@ public class SoundMeter {
 //
 //            double abs = Math.sqrt((array[(int)real]* array[(int)real]) + Math.pow(array[imaginary], 2));
 //            Log.i("Array" , "Muestra " + fftBin + " : " + array[(int)real] + " , " + array[imaginary]);
-
+            Log.i("FREC" , "Energy abs : " + abs[fftBin] ) ;
             if(abs[fftBin] > mMaxFFTSample){
                 mMaxFFTSample = abs[fftBin];
                 mPeak = fftBin;
@@ -138,11 +142,11 @@ public class SoundMeter {
         }
 
         float frecuncia = (sampleRate / FFT_SIZE) * mPeak;
+        Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
         compararSonidos(frecuncia,mMaxFFTSample);
     }
 
     public void compararSonidos(float frec , double abs){
-
 
         if(frec > 100 && frec < 800){
             Log.e("SOUND","Frecuencia : " + frec);
@@ -150,6 +154,31 @@ public class SoundMeter {
             Log.e("SOUND", "Magnitud : " + abs);
         }
 
+    }
+
+
+    /** build a Hamming window filter for samples of a given size
+     * See http://www.labbookpages.co.uk/audio/firWindowing.html#windows
+     * @param size the sample size for which the filter will be created
+     */
+    private void buildHammWindow(int size) {
+        if(window != null && window.length == size) {
+            return;
+        }
+        window = new double[size];
+        for(int i = 0; i < size; ++i) {
+            window[i] = .54 - .46 * Math.cos(2 * Math.PI * i / (size - 1.0));
+        }
+    }
+
+    private double[] applyWindow(short[] input) {
+        double[] res = new double[input.length];
+
+        buildHammWindow(input.length);
+        for(int i = 0; i < input.length; ++i) {
+            res[i] = (double)input[i] * window[i];
+        }
+        return res;
     }
 
 
