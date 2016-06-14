@@ -84,7 +84,7 @@ public class SoundMeter {
 
     private void convertShortToDouble(double[] buffer) {
         for (int i =0;i<buffer.length;i++){
-            audioBuffer[i] = new Complex(buffer[i]/32768,0);
+            audioBuffer[i] = new Complex(buffer[i]/32768.0,0);
         }
     }
 
@@ -134,7 +134,7 @@ public class SoundMeter {
 //
 //            double abs = Math.sqrt((array[(int)real]* array[(int)real]) + Math.pow(array[imaginary], 2));
 //            Log.i("Array" , "Muestra " + fftBin + " : " + array[(int)real] + " , " + array[imaginary]);
-            Log.i("FREC" , "Energy abs : " + abs[fftBin] ) ;
+            //Log.i("FREC" , "Energy abs : " + abs[fftBin] ) ;
             if(abs[fftBin] > mMaxFFTSample){
                 mMaxFFTSample = abs[fftBin];
                 mPeak = fftBin;
@@ -148,7 +148,7 @@ public class SoundMeter {
 
     public void compararSonidos(float frec , double abs){
 
-        if(frec > 100 && frec < 800){
+        if(frec > 900 && frec < 1400){
             Log.e("SOUND","Frecuencia : " + frec);
 
             Log.e("SOUND", "Magnitud : " + abs);
@@ -176,7 +176,9 @@ public class SoundMeter {
 
         buildHammWindow(input.length);
         for(int i = 0; i < input.length; ++i) {
+            Log.i("FREC", "Antes : " + input[i]);
             res[i] = (double)input[i] * window[i];
+            Log.i("FREC" , "Despues : " + res[i]);
         }
         return res;
     }
