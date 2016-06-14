@@ -84,7 +84,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
     private ImageView microfono = null;
     private boolean recording = true;
-
+    private boolean mostrandoAlerta = false;
     /*Metodos para llamar el JNI y ejecutar el codigo en C*/
     //Se carga la libreria que hemos definido en el gradle.build
 //    static {
@@ -114,7 +114,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         public void run() {
 
             double amp = mSensor.getAmplitud();
-
+            int tipoAlerta = mSensor.comprobarAlerta();
             if (grabandoAmbiente) {
                 Log.i("Noise", "Amplitud : " + amp);
                 ambiente += amp;
@@ -126,14 +126,15 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                     cambiarIco();
                     Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
                 }
-            } else {
-                if ((amp - ambiente) > 30) {
+            } else if(!mostrandoAlerta) {
+                if ((amp - ambiente) > 80) {
 
                     Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente);
-                    sendMessage(RUTA, "2");
-                    vibrar();
-                    showDialog();
+                    darAlerta(1);
 
+                }
+                else if (tipoAlerta != -1){
+                    darAlerta(tipoAlerta);
                 }
             }
 
@@ -141,13 +142,18 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
             mHandler.postDelayed(mPollTask, POLL_INTERVAL);
         }
     };
-    private double amplitudAmbiente;
 
+    private void darAlerta(int tipo){
+        sendMessage(RUTA, Integer.toString(tipo));
+        vibrar();
+        showDialog(Integer.toString(tipo));
+        mostrandoAlerta = true;
+    }
 
 
     private void startRecording() {
         mSensor.start();
-        recording =  true;
+        recording = true;
         startAnimation();
 
         mHandler.postDelayed(mPollTask, POLL_INTERVAL);
@@ -195,7 +201,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
     }
 
-    public void showDialog() {
+    public void showDialog(String tipoAlerta) {
         //FragmentManager fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -207,7 +213,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
         //LLamamos al JNI para que nos de un tipo de Alerta
         //String msg = getResultJNI(2);
-        newFragment= CustomDialogFragment.newInstance("Sirena detectada");
+        newFragment= CustomDialogFragment.newInstance(tipoAlerta);
         newFragment.show(ft, "alert_dialog");
 
         new CountDownTimer(3000, 1000) {
@@ -217,6 +223,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
 
             public void onFinish() {
                 dismissDialog();
+                mostrandoAlerta = false;
             }
         }.start();
 
@@ -543,11 +550,6 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                 Toast.makeText(this, "Se ha detenido la detección aumtomaticamente", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public double getAmplitudAmbiente() {
-
-        return amplitudAmbiente;
     }
 
     public class ActivityDetectionBroadcastReceiver extends BroadcastReceiver {

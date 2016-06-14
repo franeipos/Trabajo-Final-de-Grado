@@ -21,10 +21,7 @@ public class SoundMeter {
     private double lastLevel = 0;
     private Complex audioBuffer[];
     private double[] window;
-    private int tiempoAmbienteBuffer = 0;
-    private double ambienteAmplitud = 0;
-    private int numBuffersAmbiente = 0;
-    private int cont = 0;
+    private int [] alertas;
 
     public void start() {
         try {
@@ -35,6 +32,8 @@ public class SoundMeter {
 //            Log.i("Buffer" , "BUFFER SIZE : " + bufferSize);
             bufferSize = 1024;
             audioBuffer =  new Complex[bufferSize];
+            alertas = new int[3];
+            limpiarAlertas();
         } catch (Exception e) {
             android.util.Log.e("TrackingFlow", "Exception", e);
         }
@@ -58,14 +57,13 @@ public class SoundMeter {
             int bufferReadResult = 1;
 
             if (audio != null) {
-
                 // Sense the voice...
                 bufferReadResult = audio.read(buffer, 0, bufferSize);
-                if(cont ==0) {
+
                     convertShortToDouble(applyWindow(buffer));
                     calculateFFT();
-                    cont++;
-                }
+
+
                 double sumLevel = 0;
                 for (int i = 0; i < bufferReadResult; i++) {
                     sumLevel += buffer[i];
@@ -142,16 +140,14 @@ public class SoundMeter {
         }
 
         float frecuncia = (sampleRate / FFT_SIZE) * mPeak;
-        Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
+       // Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
         compararSonidos(frecuncia,mMaxFFTSample);
     }
 
     public void compararSonidos(float frec , double abs){
 
         if(frec > 900 && frec < 1400){
-            Log.e("SOUND","Frecuencia : " + frec);
-
-            Log.e("SOUND", "Magnitud : " + abs);
+           meterAlerta(1);
         }
 
     }
@@ -176,11 +172,48 @@ public class SoundMeter {
 
         buildHammWindow(input.length);
         for(int i = 0; i < input.length; ++i) {
-            Log.i("FREC", "Antes : " + input[i]);
             res[i] = (double)input[i] * window[i];
-            Log.i("FREC" , "Despues : " + res[i]);
         }
         return res;
+    }
+
+    public void meterAlerta(int tipo) {
+        boolean metido = false;
+        for(int i=0;i < alertas.length;i++) {
+            if(alertas[i] == 0){
+                alertas[i] = tipo;
+                metido = true;
+            }
+        }
+        if(!metido){
+            limpiarAlertas();
+            alertas[0] = tipo;
+        }
+    }
+
+    public int comprobarAlerta() {
+        int tipoAlerta = -1;
+
+        if (alertas[0]!=0){
+            if(alertas[0] == alertas[1] || alertas[0] == alertas[2]){
+                tipoAlerta = alertas[0];
+                limpiarAlertas();
+
+            }
+            else if ( alertas[1]!=0){
+                if(alertas[1] == alertas[2]){
+                    tipoAlerta = alertas[1];
+                    limpiarAlertas();
+                }
+            }
+        }
+
+        return tipoAlerta;
+    }
+    public void limpiarAlertas() {
+        for(int i=0;i < alertas.length;i++) {
+            alertas[i] = 0;
+        }
     }
 
 
