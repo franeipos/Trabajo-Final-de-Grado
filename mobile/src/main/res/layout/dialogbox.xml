@@ -47,7 +47,7 @@
                 android:id="@+id/demotext2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Demo2"
+                android:text="Check SmartWatch"
                 android:background="@drawable/rounded_edge"
                 android:padding="12dp"
                 android:layout_centerVertical="true"/>
@@ -58,57 +58,7 @@
                 android:gravity="bottom"
                 android:layout_toRightOf="@+id/demotext2"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/dashboard_icon"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/demo3"
-            android:layout_width="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/margin_right"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/demotext3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Demo3"
-                android:background="@drawable/rounded_edge"
-                android:padding="12dp"
-                android:layout_centerVertical="true"/>
-
-            <ImageView
-                android:layout_width="@dimen/filter_image"
-                android:layout_height="@dimen/filter_image"
-                android:gravity="bottom"
-                android:layout_toRightOf="@+id/demotext3"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/dashboard_icon"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/demo4"
-            android:layout_width="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/margin_right"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/demotext4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Demo4"
-                android:background="@drawable/rounded_edge"
-                android:padding="12dp"
-                android:layout_centerVertical="true"/>
-
-            <ImageView
-                android:layout_width="@dimen/filter_image"
-                android:layout_height="@dimen/filter_image"
-                android:gravity="bottom"
-                android:layout_toRightOf="@+id/demotext4"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/calender_icon"/>
+                android:src="@drawable/smartwatch"/>
         </RelativeLayout>
 
         <RelativeLayout

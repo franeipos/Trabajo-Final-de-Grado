@@ -15,14 +15,14 @@ import org.jtransforms.fft.FloatFFT_1D;
  * Created by Francisco on 04/06/2016.
  */
 public class SoundMeter {
-    private static final int sampleRate = 8000;
+    private static final int sampleRate = 44100;
     private AudioRecord audio;
     private int bufferSize;
     private double lastLevel = 0;
     private Complex audioBuffer[];
     private double[] window;
     private int [] alertas;
-
+    private int contadorLlamadas = 0 ;
     public void start() {
         try {
 
@@ -32,7 +32,7 @@ public class SoundMeter {
 //            Log.i("Buffer" , "BUFFER SIZE : " + bufferSize);
             bufferSize = 1024;
             audioBuffer =  new Complex[bufferSize];
-            alertas = new int[3];
+            alertas = new int[8];
             limpiarAlertas();
         } catch (Exception e) {
             android.util.Log.e("TrackingFlow", "Exception", e);
@@ -140,14 +140,18 @@ public class SoundMeter {
         }
 
         float frecuncia = (sampleRate / FFT_SIZE) * mPeak;
-       // Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
+        Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
         compararSonidos(frecuncia,mMaxFFTSample);
     }
 
     public void compararSonidos(float frec , double abs){
 
-        if(frec > 900 && frec < 1400){
-           meterAlerta(1);
+        if(frec > 1200 && frec < 1400){
+           //meterAlerta(1);
+            //Log.e("FREC", "Energy abs : " + abs + " Fecuencia : " + frec + "cont : " + contadorLlamadas) ;
+        }
+        else{
+            meterAlerta(0);
         }
 
     }
@@ -179,33 +183,40 @@ public class SoundMeter {
 
     public void meterAlerta(int tipo) {
         boolean metido = false;
-        for(int i=0;i < alertas.length;i++) {
-            if(alertas[i] == 0){
-                alertas[i] = tipo;
-                metido = true;
-            }
-        }
-        if(!metido){
-            limpiarAlertas();
-            alertas[0] = tipo;
-        }
+
+        alertas[contadorLlamadas] = tipo;
+        contadorLlamadas++;
     }
 
     public int comprobarAlerta() {
         int tipoAlerta = -1;
+        int  [] vecesAlerta =  new int[3];
 
-        if (alertas[0]!=0){
-            if(alertas[0] == alertas[1] || alertas[0] == alertas[2]){
-                tipoAlerta = alertas[0];
+        for (int i = 1; i < alertas.length; i++) {
+            vecesAlerta[alertas[i]]++;
+        }
+
+
+        for (int i=1; i < vecesAlerta.length; i++){
+            if(vecesAlerta[i]>3){
+                tipoAlerta = vecesAlerta[i];
                 limpiarAlertas();
+                contadorLlamadas =0;
+            }
+        }
 
+        if(contadorLlamadas == 8){
+            if(alertas[alertas.length-1]!=0){ //si acaba de sonar una alerta nos la guardamos para la siguiente
+                int aux = alertas[alertas.length-1];
+                limpiarAlertas();
+                alertas[0] = aux;
+                contadorLlamadas = 1;
             }
-            else if ( alertas[1]!=0){
-                if(alertas[1] == alertas[2]){
-                    tipoAlerta = alertas[1];
-                    limpiarAlertas();
-                }
+            else{
+                limpiarAlertas();
+                contadorLlamadas=0;
             }
+
         }
 
         return tipoAlerta;
