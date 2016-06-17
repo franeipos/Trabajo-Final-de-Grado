@@ -127,7 +127,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                     Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
                 }
             } else if(!mostrandoAlerta) {
-                if ((amp - ambiente) > 80) {
+                if ((amp - ambiente) > 120) {
 
                     Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente);
                     darAlerta(2);

@@ -88,66 +88,45 @@ public class SoundMeter {
 
     public void calculateFFT() {
 
-        //it is assumed that a float array audioBuffer exists with even length = to
-        //the capture size of your audio buffer
-
-        //The size of the FFT will be the size of your audioBuffer / 2
-        //int FFT_SIZE = bufferSize / 2;
         int FFT_SIZE = bufferSize;
 
-
-        //Take the FFT
-       double array [] = new double [4];
-        array[0] = -0.03480425839330703;
-        array[1] = 0.07910192950176387;
-        array[2] = 0.7233322451735928;
-        array[3]= 0.1659819820667019;
         FFT fft =  new FFT();
         double [] abs = fft.fftABS(audioBuffer);
 
-        //The first 1/2 of audioBuffer now contains bins that represent the frequency
-        //of your wave, in a way.  To get the actual frequency from the bin:
-        //frequency_of_bin = bin_index * sample_rate / FFT_SIZE
+        compararSonidos(abs);
+    }
 
-        //assuming the length of audioBuffer is even, the real and imaginary parts will be
-        //stored as follows
-        //audioBuffer[2*k] = Re[k], 0<=k<n/2
-        //audioBuffer[2*k+1] = Im[k], 0<k<n/2
+    public void compararSonidos(double[] abs){
 
-        //Define the frequencies of interest
-        float freqMin = 14400;
-        float freqMax = 16200;
-
-        double mMaxFFTSample = 0.0;
-        int mPeak = 0;
+        double potenciaArmonico1 = 0.0;
+        double potenciaArmonico2 = 0.0;
+        int posicionArmonico1 = 0;
+        int posicionArmonico2 = 0;
 
         //Loop through the fft bins and filter frequencies
         for(int fftBin = 0; fftBin < audioBuffer.length / 2; fftBin++){
-//            //Calculate the frequency of this bin assuming a sampling rate
-            //float frequency = (float)fftBin * (float)sampleRate / (float)FFT_SIZE;
 //
-//            //Calculate the index where the real and imaginary parts are stored
-//            double real =  2*fftBin;
-//            int imaginary =  2*fftBin + 1;
-//
-//            double abs = Math.sqrt((array[(int)real]* array[(int)real]) + Math.pow(array[imaginary], 2));
-//            Log.i("Array" , "Muestra " + fftBin + " : " + array[(int)real] + " , " + array[imaginary]);
-            //Log.i("FREC" , "Energy abs : " + abs[fftBin] ) ;
-            if(abs[fftBin] > mMaxFFTSample){
-                mMaxFFTSample = abs[fftBin];
-                mPeak = fftBin;
+            if(abs[fftBin] > potenciaArmonico1){
+                potenciaArmonico2 = potenciaArmonico1;
+                posicionArmonico2 = posicionArmonico1;
+                posicionArmonico1 = fftBin;
+                potenciaArmonico1 = abs[fftBin];
+            }
+            else if(abs[fftBin] > potenciaArmonico2){
+                posicionArmonico2 = fftBin;
+                potenciaArmonico2 = abs[fftBin];
             }
         }
 
-        float frecuncia = (sampleRate / FFT_SIZE) * mPeak;
-        Log.e("FREC" , "Energy abs : " + mMaxFFTSample + "Fecuencia : " +  frecuncia) ;
-        compararSonidos(frecuncia,mMaxFFTSample);
-    }
+        float frecuencia1 = (sampleRate / bufferSize) * posicionArmonico1;
+        float frecuencia2 = (sampleRate / bufferSize) * posicionArmonico2;
+        Log.e("FREC" , "Armonico 1 : " + frecuencia1 + "Energía : " +  abs[9] + "  "+ abs[10] + "  " + abs[11] + abs[12] ) ;
 
-    public void compararSonidos(float frec , double abs){
+        if(frecuencia1 > 1200 && frecuencia1 < 1400){
+            if(abs[9] > 0.1 || abs[10] > 0.1 || abs[11] > 0.1 || abs[12] > 0.1 || abs[13]> 0.1){
+                meterAlerta(1);
+            }
 
-        if(frec > 1200 && frec < 1400){
-           //meterAlerta(1);
             //Log.e("FREC", "Energy abs : " + abs + " Fecuencia : " + frec + "cont : " + contadorLlamadas) ;
         }
         else{
