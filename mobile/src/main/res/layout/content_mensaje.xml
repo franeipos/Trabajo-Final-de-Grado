@@ -45,12 +45,12 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Dialog"
-        android:onClick="Boton"
-        android:id="@+id/button" />
+    <!--<Button-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:text="Dialog"-->
+        <!--android:onClick="Boton"-->
+        <!--android:id="@+id/button" />-->
 
     <!--<Button-->
         <!--android:layout_height="wrap_content"-->

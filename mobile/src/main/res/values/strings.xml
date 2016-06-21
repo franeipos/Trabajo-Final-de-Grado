@@ -10,7 +10,11 @@
     <string name="ayudaquieto">Esta opción detectará cuando esté quieto fuera del vehículo y detendrá la detección de sonidos automaticamente.</string>
     <string name="vibrar">Vibrar al detectar peligro</string>
     <string name="ayudavibrar">Activando esta opción permitirás a EarDrive avisarte también por vibración cuando se detecte un sonido peligroso.</string>
-
+    <string name="margen">Umbral de detección</string>
+    <string name="descMargen">Modificando este valor aumentarás el umbral de detección de sonidos fuertes de EarDrive. Cuanto más bajo sea el valor más sensible será la detección.</string>
+    <string name="sonidos">Peligros a detectar</string>
+    <string name="claxon">Claxon</string>
+    <string name="fuerte">Sonidos fuertes</string>
 
     <!-- Actividades -->
     <string name="in_vehicle">In a vehicle</string>

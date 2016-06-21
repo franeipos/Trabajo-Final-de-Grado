@@ -104,6 +104,9 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     private SharedPreferences prefs = null;
     private Boolean automatico = false;
     private Boolean vibracion = false;
+    private int margen = 0;
+    private Boolean claxon = true;
+    private Boolean fuertes = true;
 
     private Boolean grabandoAmbiente =  false;
     private int contAmbiente = 0;
@@ -119,22 +122,26 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                 Log.i("Noise", "Amplitud : " + amp);
                 ambiente += amp;
                 contAmbiente++;
-                if (contAmbiente >= 15) {
+                if (contAmbiente >= 63) {
                     grabandoAmbiente = false;
-                    ambiente = ambiente / 15;
+                    ambiente = ambiente / 63;
                     contAmbiente = 0;
                     cambiarIco();
                     Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
                 }
             } else if(!mostrandoAlerta) {
-                if ((amp - ambiente) > 120) {
+                if ((amp - ambiente) > 80*margen) {
 
-                    Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente);
-                    darAlerta(2);
+                    Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente + "Margen : " +margen);
+                    if(fuertes) {
+                        darAlerta(2);
+                    }
 
                 }
                 else if (tipoAlerta != -1){
-                    darAlerta(tipoAlerta);
+                    if(claxon) {
+                        darAlerta(tipoAlerta);
+                    }
                 }
             }
 
@@ -346,6 +353,9 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
         prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         automatico = prefs.getBoolean("quieto", false);
         vibracion = prefs.getBoolean("vibrar",false);
+        margen = prefs.getInt("margen",2);
+        claxon = prefs.getBoolean("claxon",true);
+        fuertes = prefs.getBoolean("fuertes",true);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -451,8 +461,9 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     public void onConnected(Bundle bundle) {
         if(automatico) {
             requestActivityUpdates();
+            Log.i(TAG, "Connected");
         }
-        Log.i(TAG, "Connected");
+
     }
 
     @Override

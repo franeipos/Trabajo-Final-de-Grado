@@ -56,6 +56,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.francisco.eardrive.InicioActivity" />
         </activity>
+        <service
+            android:name=".ActivitiesIntentService"
+            android:exported="false" />
     </application>
 
 </manifest>

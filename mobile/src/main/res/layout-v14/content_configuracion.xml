@@ -1,59 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.francisco.trial.ConfiguracionActivity"
     tools:showIn="@layout/activity_configuracion">
 
-    <Switch
-        android:id="@+id/quieto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/quieta"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-    <TextView
+    <ScrollView android:id="@+id/ScrollViewID"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/descQuieto"
-        android:text="@string/ayudaquieto"
-        android:layout_alignParentTop="false"
-        android:layout_below="@+id/quieto"
-        />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/separadorQuieto"
-        android:background="@color/colorAccent"
-        android:layout_below="@+id/descQuieto"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="25dp"/>
-
-    <Switch
-        android:id="@+id/vibrar"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/vibrar"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:layout_below="@id/separadorQuieto"/>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+        <Switch
+            android:id="@+id/quieto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quieta"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descQuieto"
+            android:text="@string/ayudaquieto"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/quieto"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/descVibrar"
-        android:text="@string/ayudavibrar"
-        android:layout_alignParentTop="false"
-        android:layout_below="@+id/vibrar"
-        android:layout_marginBottom="15dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/separadorQuieto"
+            android:background="@color/colorAccent"
+            android:layout_below="@+id/descQuieto"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="25dp"/>
+
+        <Switch
+            android:id="@+id/vibrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrar"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_below="@id/separadorQuieto"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descVibrar"
+            android:text="@string/ayudavibrar"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/vibrar"
+            android:layout_marginBottom="15dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/separadorVibrar"
+            android:background="@color/colorAccent"
+            android:layout_below="@+id/descVibrar"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separadorVibrar"
+            android:id="@+id/textoMargen"
+            android:text="@string/margen"
+            android:textStyle="bold"
+            android:textSize="15dp"
+
+            android:textColor="@color/negro"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/descMargen"
+            android:id="@+id/descMargen"
+            android:layout_below="@+id/textoMargen"
+            android:layout_marginTop="5dp" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/barraMargen"
+            android:progress="2"
+            android:max="10"
+            android:layout_below="@+id/descMargen"
+            android:layout_marginTop="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/valorUmbral"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/separadorMargen"
+            android:background="@color/colorAccent"
+            android:layout_below="@+id/barraMargen"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separadorMargen"
+            android:id="@+id/textoSonidos"
+            android:text="@string/sonidos"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/negro"/>
+
+        <CheckBox android:id="@+id/claxon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/claxon"
+            android:onClick="comprobarCheck"
+            android:layout_below="@+id/textoSonidos"
+            android:layout_marginTop="5dp"/>
+
+        <CheckBox android:id="@+id/fuertes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fuerte"
+            android:onClick="comprobarCheck"
+            android:layout_below="@+id/claxon"/>
+    </LinearLayout>
+    </ScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>
