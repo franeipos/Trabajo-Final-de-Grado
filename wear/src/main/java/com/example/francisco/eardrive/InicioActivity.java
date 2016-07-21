@@ -104,7 +104,7 @@ public class InicioActivity extends Activity implements MessageApi.MessageListen
                 alertaIco.setImageResource(R.drawable.siren);
                 break;
             default:
-                 alertaIco.setImageResource(R.drawable.earphone);
+                 alertaIco.setImageResource(R.drawable.ear2);
                 break;
         }
     }

@@ -119,7 +119,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
             double amp = mSensor.getAmplitud();
             int tipoAlerta = mSensor.comprobarAlerta();
             if (grabandoAmbiente) {
-                Log.i("Noise", "Amplitud : " + amp);
+               // Log.i("Noise", "Amplitud : " + amp);
                 ambiente += amp;
                 contAmbiente++;
                 if (contAmbiente >= 63) {
@@ -127,12 +127,14 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                     ambiente = ambiente / 63;
                     contAmbiente = 0;
                     cambiarIco();
-                    Log.i("Noise", "AMBIENTE GRABADO : " +ambiente);
+                    Log.i("Ambiente", "AMBIENTE GRABADO : " +20*Math.log10(ambiente/32768) );
                 }
             } else if(!mostrandoAlerta) {
                 if ((amp - ambiente) > 80*margen) {
-
-                    Log.i("Noise", "SUPERADO EL UMBRAL : " + "amplitud : " + amp + "  Ambiente : " + ambiente + "Margen : " +margen);
+                    Log.i("Noise", "Alerta : "+amp+ " Ambiente : " + ambiente + "Umbral : " + 80*margen);
+                    double m = margen*80 + ambiente;
+                    double umbral = 20*Math.log10(m/32768);
+                    Log.i("Noise", "SUPERADO EL UMBRAL : " + "Alerta : " + 20*Math.log10(amp/32768) + "  Ambiente : " + 20*Math.log10(ambiente/32768) + " Umbral : " + umbral);
                     if(fuertes) {
                         darAlerta(2);
                     }
@@ -140,7 +142,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                 }
                 else if (tipoAlerta != -1){
                     if(claxon) {
-                        darAlerta(tipoAlerta);
+                        darAlerta(1);
                     }
                 }
             }
@@ -494,7 +496,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
     }
 
     public String getDetectedActivity(int detectedActivityType) {
-        Toast.makeText(this, "Detected", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Detected", Toast.LENGTH_SHORT).show();
         Resources resources = this.getResources();
         switch(detectedActivityType) {
             case DetectedActivity.IN_VEHICLE:
@@ -630,7 +632,7 @@ public class MensajeActivity extends AppCompatActivity  implements GoogleApiClie
                     break;
                 case "2":
                     img.setImageResource(R.drawable.siren);
-                    text.setText("Sirena detectada!");
+                    text.setText("Peligro detectado!");
                     break;
                 default:
                     img.setImageResource(R.drawable.earphone);

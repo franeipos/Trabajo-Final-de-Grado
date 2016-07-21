@@ -66,6 +66,7 @@ public class SoundMeter {
 
                 double sumLevel = 0;
                 for (int i = 0; i < bufferReadResult; i++) {
+                    //Log.i("SONIDO" , "Muestra " + i +" : "+buffer[i]);
                     sumLevel += buffer[i];
 
                 }
@@ -120,7 +121,7 @@ public class SoundMeter {
 
         float frecuencia1 = (sampleRate / bufferSize) * posicionArmonico1;
         float frecuencia2 = (sampleRate / bufferSize) * posicionArmonico2;
-        //Log.e("FREC" , "Armonico 1 : " + frecuencia1 + "Energía : " +  abs[9] + "  "+ abs[10] + "  " + abs[11] + abs[12] ) ;
+        //Log.i("FRECUENCIA" , "Frecuencia : " + frecuencia1) ;
 
         if(frecuencia1 > 1200 && frecuencia1 < 1400){
             if(abs[9] > 0.1 || abs[10] > 0.1 || abs[11] > 0.1 || abs[12] > 0.1 || abs[13]> 0.1){
